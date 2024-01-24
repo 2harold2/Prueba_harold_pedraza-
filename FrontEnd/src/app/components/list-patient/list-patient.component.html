@@ -1,0 +1,47 @@
+<div class="list" *ngIf="allPatients?.length">
+  <table class="list_table" style="width: 100%;">
+    <thead>
+      <tr>
+        <td>Id paciente</td>
+        <td>Tipo documento</td>
+        <td>Numero documento</td>
+        <td>Nombres</td>
+        <td>Apellidos</td>
+        <td>Fecha nacimiento</td>
+        <td>Email</td>
+        <td>Telefono</td>
+        <td>Afiliacion</td>
+        <td>Editar</td>
+        <td>Eliminar</td>
+      </tr>
+    </thead>
+    <tbody >
+      <tr *ngFor="let patient of allPatients">
+        <td>{{patient.idPatient}}</td>
+        <td>{{patient.documentType}}</td>
+        <td>{{patient.documentNumber}}</td>
+        <td>{{patient.names}}</td>
+        <td>{{patient.lastNames}}</td>
+        <td>{{patient.birthDate}}</td>
+        <td>{{patient.email}}</td>
+        <td>{{patient.phone}}</td>
+        <td>{{patient.afiliation}}</td>
+        <td>
+          <button (click)="editPatient(patient.idPatient)">
+            Editar
+          </button>
+        </td>
+        <td>
+          <button (click)="deletePatient(patient.idPatient)">
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <br>
+  <div class="list_button">
+    <button (click)="editPatient(0)">Crear paciente</button>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="formGroup">
+  <input type="text" formControlName="documentNumber" placeholder="numero documento">
+  <input type="text" formControlName="names" placeholder="nombres">
+  <input type="text" formControlName="lastNames" placeholder="apellidos">
+  <input type="text" formControlName="email" placeholder="correo">
+  <input type="text" formControlName="phone" placeholder="telefono">
+
+  <input type="date" formControlName="birthDate" placeholder="fecha cumpleaños" value="{{ patient?.birthDate | date:'yyyy-MM-dd' }}">
+
+  <select name="" id="" formControlName="idTypeDocument" placeholder="tipo documento">
+    <option disabled [value]="0">
+      Seleccione un tipo de documento
+    </option>
+    <option [value]="document.idDocument" *ngFor="let document of documents">
+      {{document.name}}
+    </option>
+  </select>
+
+  <select name="" id="" formControlName="idAffiliationType" placeholder="afiliacion">
+    <option disabled [value]="0">
+      Seleccione un tipo de afiliacion
+    </option>
+    <option [value]="document.idAffiliationType" *ngFor="let document of affiliattions">
+      {{document.description}}
+    </option>
+  </select>
+
+  <br>
+
+  <button (click)="back()" type="button" >Volver</button>
+  <button type="submit">Enviar</button>
+</form>
+
+<hr>
