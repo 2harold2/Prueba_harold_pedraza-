@@ -106,33 +106,21 @@ CREATE PROCEDURE CrearPaciente (
 	@telefono VARCHAR(15),
 	@fechaNacimiento DATETIME,
 	@idTipoDocumento INT,
-	@idTipoAfiliacion INT,
-	@success BIT OUTPUT,
-	@message VARCHAR(100) OUTPUT
+	@idTipoAfiliacion INT
 )
 AS
 BEGIN
+	INSERT INTO Paciente(numeroDocumento, nombres, apellidos, email, telefono, fechaNacimiento, idTipoDocumento, idTipoAfiliacion)
+	VALUES (@numeroDocumento, @nombres, @apellidos, @email, @telefono, @fechaNacimiento, @idTipoDocumento, @idTipoAfiliacion);
 
-	IF NOT EXISTS (SELECT 1 FROM Paciente WHERE numeroDocumento = @numeroDocumento)
-	BEGIN
-		INSERT INTO Paciente(numeroDocumento, nombres, apellidos, email, telefono, fechaNacimiento, idTipoDocumento, idTipoAfiliacion)
-		VALUES (@numeroDocumento, @nombres, @apellidos, @email, @telefono, @fechaNacimiento, @idTipoDocumento, @idTipoAfiliacion);
-
-		SET @success = 1;
-		SET @message = 'Se ha creado el usuario correctamente';
-		SELECT SCOPE_IDENTITY() AS IdPatient;
-	END
-	ELSE
-		BEGIN
-			SET @success = 0;
-			SET @message = 'Ya existe el usuario';
-		END
+	SELECT SCOPE_IDENTITY() AS IdPatient;
 END
 
 DECLARE @realizado BIT;
 DECLARE @mensaje VARCHAR(100);
 
-EXEC CrearPaciente '123456', 'Harold', 'Pedraza', 'test@test.co', '98765432', '01-21-1999', 1, 1, @realizado OUTPUT, @mensaje OUTPUT;
+--EXEC CrearPaciente '123456', 'Harold', 'Pedraza', 'test@test.co', '98765432', '01-21-1999', 1, 1, @realizado OUTPUT, @mensaje OUTPUT;
+EXEC CrearPaciente '313131', 'eqe', 'eq', 'a@dsa.co', '132131', '2024-01-17', 1, 1, @realizado OUTPUT, @mensaje OUTPUT;
 PRINT @mensaje;
 
 
@@ -145,34 +133,22 @@ CREATE PROCEDURE ActualizarPaciente (
 	@telefono VARCHAR(15),
 	@fechaNacimiento DATETIME,
 	@idTipoDocumento INT,
-	@idTipoAfiliacion INT,
-	@success BIT OUTPUT,
-	@message VARCHAR(100) OUTPUT
+	@idTipoAfiliacion INT
 )
 AS
 BEGIN 
-	IF EXISTS (SELECT 1 FROM Paciente WHERE idPaciente = @idPaciente)
-	BEGIN
-		UPDATE Paciente
-			SET 
-				numeroDocumento = @numeroDocumento,
-				nombres = @nombres,
-				apellidos = @apellidos,
-				email = @email,
-				telefono = @telefono,
-				fechaNacimiento = @fechaNacimiento,
-				idTipoDocumento = @idTipoDocumento,
-				idTipoAfiliacion = @idTipoAfiliacion
-			WHERE
-				idPaciente = @idPaciente;
-		SET @success = 1;
-		SET @message = 'Se ha actualizado el usuario correctamente';
-	END
-	ELSE 
-		BEGIN
-			SET @success = 0;
-			SET @message = 'No existe el usuario';
-		END
+	UPDATE Paciente
+	SET 
+		numeroDocumento = @numeroDocumento,
+		nombres = @nombres,
+		apellidos = @apellidos,
+		email = @email,
+		telefono = @telefono,
+		fechaNacimiento = @fechaNacimiento,
+		idTipoDocumento = @idTipoDocumento,
+		idTipoAfiliacion = @idTipoAfiliacion
+	WHERE
+		idPaciente = @idPaciente;
 END
 
 DECLARE @realizadoActualizacion BIT;
@@ -180,6 +156,17 @@ DECLARE @mensajeActualizacion VARCHAR(100);
 
 EXEC ActualizarPaciente 1, '123456', 'Harolds', 'Pedrazas', 'test@test.com', '98765432', '01-21-1999', 1, 1, @realizadoActualizacion OUTPUT, @mensajeActualizacion OUTPUT;
 PRINT @mensajeActualizacion;
+
+
+CREATE PROCEDURE EliminarPaciente (
+	@idPaciente INT
+)
+AS
+BEGIN
+	DELETE FROM Paciente WHERE idPaciente = @idPaciente;
+END
+
+EXEC EliminarPaciente 4
 
 
 CREATE PROCEDURE ObtenerTodosLosPacientes
